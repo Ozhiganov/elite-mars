@@ -1,0 +1,667 @@
+backend:
+  name: git-gateway
+  branch: master
+media_folder: static/images
+public_folder: /images
+collections:
+  - name: config
+    label: config
+    files:
+      - name: config
+        label: config
+        file: site-metadata.json
+        fields:
+          - widget: string
+            name: title
+            label: Title
+            required: true
+            hint: Site title
+          - widget: hidden
+            name: landing_template
+            label: Landing Template
+            required: true
+            default: home
+          - widget: select
+            name: palette
+            label: Color Palette
+            required: true
+            default: blue
+            hint: The color palette used for the site.
+            options:
+              - blue
+              - green
+          - widget: hidden
+            name: palettes
+            label: Palettes
+            required: false
+  - name: menu
+    label: Menu Configuration
+    files:
+      - name: menu
+        label: Menu Configuration
+        file: src/data/menu.yml
+        fields:
+          - widget: list
+            name: actions
+            label: Menu Action Buttons
+            required: false
+            hint: The action buttons displayed below the menu entries
+            fields:
+              - widget: string
+                name: label
+                label: Button Label
+                required: true
+                hint: The text displayed inside the button
+              - widget: string
+                name: url
+                label: Button URL
+                required: false
+  - name: footer
+    label: Footer Configuration
+    files:
+      - name: footer
+        label: Footer Configuration
+        file: src/data/footer.yml
+        fields:
+          - widget: list
+            name: social_icons
+            label: Social Mediaa Icons
+            required: false
+            hint: A list of social media icons displayed in tyhe page footer
+            fields:
+              - widget: string
+                name: title
+                label: Icon Title
+                required: true
+              - widget: string
+                name: icon
+                label: Icon
+                required: true
+                hint: Font Awesome Icon
+              - widget: string
+                name: url
+                label: Icon URL
+                required: false
+          - widget: string
+            name: copyright
+            label: Copyright Text
+            required: false
+            hint: The copyright text displayed at the bottom of the page footer
+          - widget: list
+            name: links
+            label: Links
+            required: false
+            hint: A list of links displayed in the footer.
+            fields:
+              - widget: string
+                name: text
+                label: Link text
+                required: false
+              - widget: string
+                name: url
+                label: URL
+                required: false
+              - widget: boolean
+                name: new_window
+                label: Open in new window
+                required: false
+                default: true
+  - name: home
+    label: Home
+    files:
+      - name: home
+        label: Home
+        file: src/pages/index.md
+        fields:
+          - widget: string
+            name: title
+            label: Page Title
+            required: true
+          - widget: object
+            name: banner
+            label: Page Banner
+            required: false
+            hint: The banner displayed at the top of the landing page
+            fields:
+              - widget: string
+                name: title
+                label: Banner Title
+                required: true
+              - widget: markdown
+                name: subtitle
+                label: Banner Subtitle
+                required: false
+                hint: The text displayed below the banner title
+              - widget: list
+                name: actions
+                label: Banner Action Buttons
+                required: false
+                fields:
+                  - widget: string
+                    name: label
+                    label: Button Label
+                    required: true
+                    hint: The text displayed inside the action button
+                  - widget: string
+                    name: url
+                    label: Button URL
+                    required: false
+                  - widget: boolean
+                    name: is_scrolly
+                    label: Is Scrolly
+                    required: false
+                    default: false
+                    hint: >-
+                      Gives the button a scroll animation (if the button url is
+                      a section ID)
+                  - widget: boolean
+                    name: is_primary
+                    label: Is Primary
+                    required: false
+                    default: false
+                    hint: Gives the button a primary color scheme
+              - widget: object
+                name: bottom_link
+                label: Bottom Action
+                required: false
+                hint: >-
+                  The action button displayed at the very bottom of the page
+                  banner
+                fields:
+                  - widget: string
+                    name: label
+                    label: Button Label
+                    required: false
+                    hint: The text displayed inside the action button
+                  - widget: string
+                    name: url
+                    label: Button URL
+                    required: false
+                  - widget: boolean
+                    name: has_arrow
+                    label: Has Arrow
+                    required: false
+                    default: false
+                    hint: Displays a downward pointing arrow below the button text
+                  - widget: boolean
+                    name: is_scrolly
+                    label: Is Scrolly
+                    required: false
+                    default: false
+                    hint: >-
+                      gives the button a scroll animation (if the button url is
+                      a section ID)
+          - widget: list
+            name: sections
+            label: Sections
+            required: false
+            hint: Home Sections
+            types:
+              - name: icons
+                widget: object
+                label: Icons Section
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: true
+                    default: Icons Section
+                    hint: >-
+                      The title displayed at the top of the section (If the
+                      section does not have a title, it is used by the CMS)
+                  - widget: markdown
+                    name: subtitle
+                    label: Section Subtitle
+                    required: false
+                    hint: The text displayed below the section title
+                  - widget: string
+                    name: section_id
+                    label: Section Id
+                    required: true
+                    default: one
+                  - widget: select
+                    name: background_style
+                    label: Background Style
+                    required: false
+                    default: style1
+                    hint: The style used for the section background
+                    options:
+                      - style1
+                      - style2
+                      - style3
+                      - style4
+                  - widget: list
+                    name: feature_icons
+                    label: Section Icons
+                    required: false
+                    hint: A list of icons displayed along the bottom of the section
+                    fields:
+                      - widget: string
+                        name: title
+                        label: Icon Title
+                        required: true
+                      - widget: string
+                        name: icon
+                        label: Icon
+                        required: true
+                        hint: Font Awesome icon
+                      - widget: select
+                        name: style
+                        label: Icon Style
+                        required: false
+                        hint: Controls the icon color
+                        options:
+                          - style1
+                          - style2
+                          - style3
+                  - widget: hidden
+                    name: component
+                    label: Component
+                    required: true
+                    default: Icons
+                  - widget: hidden
+                    name: type
+                    label: Reference Type Name
+                    required: true
+                    hint: >-
+                      Name of the Stackbit object model, used by fields of type
+                      reference
+                    default: icons
+              - name: spotlights
+                widget: object
+                label: Spotlights Section
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: true
+                    default: Spotlights Section
+                    hint: >-
+                      The title displayed at the top of the section (If the
+                      section does not have a title, it is used by the CMS)
+                  - widget: string
+                    name: section_id
+                    label: Section Id
+                    required: true
+                    default: two
+                  - widget: select
+                    name: background_style
+                    label: Background Style
+                    required: false
+                    default: style2
+                    hint: The style used for the section background
+                    options:
+                      - style1
+                      - style2
+                      - style3
+                      - style4
+                  - widget: list
+                    name: spotlights
+                    label: Spotlights
+                    required: false
+                    hint: A list of spotlights to be displayed in the section
+                    fields:
+                      - widget: string
+                        name: title
+                        label: Spotlight title
+                        required: true
+                      - widget: markdown
+                        name: text
+                        label: Spotlight text
+                        required: false
+                        hint: The text displayed below the spotlight title
+                      - widget: image
+                        name: home_img_path
+                        label: Spotlight Image
+                        required: false
+                        hint: The image displayed next to the spotlight content
+                  - widget: hidden
+                    name: component
+                    label: Component
+                    required: true
+                    default: Spotlights
+                  - widget: hidden
+                    name: type
+                    label: Reference Type Name
+                    required: true
+                    hint: >-
+                      Name of the Stackbit object model, used by fields of type
+                      reference
+                    default: spotlights
+              - name: features
+                widget: object
+                label: Features Section
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: true
+                    default: Features Section
+                    hint: >-
+                      The title displayed at the top of the section (If the
+                      section does not have a title, it is used by the CMS)
+                  - widget: markdown
+                    name: subtitle
+                    label: Section Subtitle
+                    required: false
+                    hint: The text displayed below the section title
+                  - widget: string
+                    name: section_id
+                    label: Section Id
+                    required: true
+                    default: three
+                  - widget: select
+                    name: background_style
+                    label: Background Style
+                    required: false
+                    default: style3
+                    hint: The style used for the section background
+                    options:
+                      - style1
+                      - style2
+                      - style3
+                      - style4
+                  - widget: list
+                    name: features
+                    label: Features
+                    required: false
+                    hint: A list of features to be displayed in the section
+                    fields:
+                      - widget: string
+                        name: title
+                        label: Feature Title
+                        required: true
+                      - widget: markdown
+                        name: text
+                        label: Feature Text
+                        required: false
+                        hint: The text displayed below the feature title
+                      - widget: string
+                        name: icon
+                        label: Feature Icon
+                        required: false
+                        hint: >-
+                          (Font Awesom icon) The icon displayed with the feature
+                          content
+                  - widget: hidden
+                    name: component
+                    label: Component
+                    required: true
+                    default: Features
+                  - widget: hidden
+                    name: type
+                    label: Reference Type Name
+                    required: true
+                    hint: >-
+                      Name of the Stackbit object model, used by fields of type
+                      reference
+                    default: features
+              - name: cta
+                widget: object
+                label: CTA Section
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: true
+                    default: CTA Section
+                    hint: >-
+                      The title displayed at the top of the section (If the
+                      section does not have a title, it is used by the CMS)
+                  - widget: markdown
+                    name: text
+                    label: Section Text
+                    required: false
+                    hint: The text displayed below the section title
+                  - widget: string
+                    name: section_id
+                    label: Section Id
+                    required: true
+                    default: cta
+                  - widget: select
+                    name: background_style
+                    label: Background Style
+                    required: false
+                    default: style4
+                    hint: The style used for the section background
+                    options:
+                      - style1
+                      - style2
+                      - style3
+                      - style4
+                  - widget: list
+                    name: actions
+                    label: Section Action Buttons
+                    required: false
+                    fields:
+                      - widget: string
+                        name: label
+                        label: Button Label
+                        required: true
+                        hint: The text displayed inside the action button
+                      - widget: string
+                        name: url
+                        label: Button URL
+                        required: false
+                      - widget: boolean
+                        name: is_scrolly
+                        label: Is Scrolly
+                        required: false
+                        default: false
+                        hint: >-
+                          Gives the button a scroll animation (if the button url
+                          is a section ID)
+                      - widget: boolean
+                        name: is_primary
+                        label: Is Primary
+                        required: false
+                        default: false
+                        hint: Gives the button a primary color scheme
+                  - widget: hidden
+                    name: component
+                    label: Component
+                    required: true
+                    default: Cta
+                  - widget: hidden
+                    name: type
+                    label: Reference Type Name
+                    required: true
+                    hint: >-
+                      Name of the Stackbit object model, used by fields of type
+                      reference
+                    default: cta
+          - widget: object
+            name: menus
+            label: Home Menus
+            required: false
+            hint: Which menus should this page show up in
+            fields:
+              - widget: object
+                name: main
+                label: Main menu item
+                required: false
+                hint: Main menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+          - widget: hidden
+            name: template
+            label: Template
+            required: true
+            default: home
+  - name: page
+    label: Pages
+    folder: src/pages/
+    create: true
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - widget: string
+        name: title
+        label: Page Title
+        required: true
+        hint: The bold first line of text displayed in the page banner
+      - widget: markdown
+        name: subtitle
+        label: Page Subtitle
+        required: false
+        hint: The text displayed below the page title
+      - widget: select
+        name: background_style
+        label: Page Background Style
+        required: false
+        default: style5
+        hint: Controls the page background color
+        options:
+          - style1
+          - style2
+          - style3
+          - style4
+          - style5
+      - widget: object
+        name: menus
+        label: Page Menus
+        required: false
+        hint: Which menus should this page show up in
+        fields:
+          - widget: object
+            name: main
+            label: Main menu item
+            required: false
+            hint: Main menu item for this page
+            fields:
+              - widget: string
+                name: title
+                label: Title
+                required: false
+                hint: The title of the menu item
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: false
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+      - widget: hidden
+        name: template
+        label: Template
+        required: true
+        default: page
+      - widget: markdown
+        name: body
+        label: Content
+        required: false
+        hint: Page content
+    filter:
+      field: template
+      value: page
+  - name: elements
+    label: Elements
+    files:
+      - name: elements
+        label: Elements
+        file: src/pages/elements.md
+        fields:
+          - widget: string
+            name: title
+            label: Page Title
+            required: true
+            hint: The bold first line of text displayed in the page banner
+          - widget: markdown
+            name: subtitle
+            label: Page Subtitle
+            required: false
+            hint: The text displayed below the page title
+          - widget: object
+            name: menus
+            label: Elements Menus
+            required: false
+            hint: Which menus should this page show up in
+            fields:
+              - widget: object
+                name: main
+                label: Main menu item
+                required: false
+                hint: Main menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+          - widget: hidden
+            name: template
+            label: Template
+            required: true
+            default: elements
+  - name: site_menus
+    label: Site Menus
+    files:
+      - name: site_menus
+        label: Site Menus
+        file: src/data/menus.json
+        fields:
+          - widget: list
+            name: main
+            label: Main menu
+            required: false
+            hint: List of items for Main menu
+            fields:
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: true
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+              - widget: string
+                name: title
+                label: Title
+                required: true
+                hint: The title of the menu item
+              - widget: string
+                name: url
+                label: URL
+                required: true
+                hint: The URL the menu item links to
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
